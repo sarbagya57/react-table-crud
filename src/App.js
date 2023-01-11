@@ -49,7 +49,7 @@ function App() {
 
 // console.log(ViewShow, RowData)
 
-//creating new product yo try garu api  dekhau tw
+//creating new product 
   const handleSubmit = (e) => {
     try{
         e.preventDefault();
@@ -59,7 +59,7 @@ function App() {
                             'product_name':name , 
                             'category_name': category, 'description':description,
                             'status':status,};
-        // aba tw key ne same bhayo tw array ko na aaunu parne ho why this coming why this kolaveri kolaveri di maile sab try garera har khayera timi lai vaneko sister ok postman bata huncha try gara ta
+        
         const headers = { 'Content-Type': 'application/json' };
         axios.post(url, credentials,headers).then((response) => {
         console.log(response.status);
@@ -71,7 +71,7 @@ function App() {
     
   }
 
-  // aba post chai kasari garne dai lai sodhxu ma  khai tyo 500 error kina aako ho tai vaneko ris uthisako 
+
   useEffect(() => {
     getProductData();
   }, [])
