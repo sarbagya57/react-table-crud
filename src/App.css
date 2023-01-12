@@ -4,8 +4,10 @@
 table 
 {
   overflow: hidden;
-    justify-content: center;
-    color: white;
+  justify-content: center;
+  color: white;
+  /* overflow: auto; */
+  table-layout: auto !important;
     
 }
 
