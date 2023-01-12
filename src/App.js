@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './App.css';
-import { Button, Form, InputGroup, Modal, ModalTitle,  Table } from 'react-bootstrap';
+import { Button, Form, FormLabel, InputGroup, Modal, ModalTitle,  Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 function App() {
@@ -136,7 +136,7 @@ const handleDelete = async () => {
       <div className='row'>
                 <div className='container'>
                     
-                    <Table striped bordered responsive >
+                    <Table bordered responsive >
                             <thead >
                                 <tr>
                                     <th> Product ID </th>
@@ -145,15 +145,13 @@ const handleDelete = async () => {
                                     <th> Description</th>
                                     <th> Created By</th>
                                     <th> Status </th>
-                                    <th> Date </th>
+                                    <th> Created At </th>
                                     <th>
-                                        <Form>
-                                        <InputGroup className='my-3'>
-
-                                            {/* onChange for search */}
+                                        <Form className='search-field'>
+                                        <InputGroup className='search'>
                                             <Form.Control
                                             onChange={(e) => setSearch(e.target.value)}
-                                            placeholder='Search products by name and category'
+                                            placeholder='Search products'
                                             />
                                         </InputGroup>
                                         </Form> 
@@ -178,10 +176,10 @@ const handleDelete = async () => {
                                         <td>{item.created_by}</td>
                                         <td>{item.status}</td>
                                         <td>{String(item.created_at).substr(0 ,10)}</td>
-                                        <td>
-                                            <Button size='sm' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button>|
-                                            <Button size='sm' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={()=> {handleEditShow(SetRowData(item),setId(item.id))}} >Edit</Button>|
-                                            <Button size='sm' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => {handleViewShow(SetRowData(item),setId(item.id), setDelete(true))}}>Delete</Button>|
+                                        <td className='button-groups'>
+                                            <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button>
+                                            <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={()=> {handleEditShow(SetRowData(item),setId(item.id))}}> Edit </Button>
+                                            <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => {handleViewShow(SetRowData(item),setId(item.id), setDelete(true))}}>Delete</Button>
                                         </td>
                                     </tr>
                                 )}
@@ -190,7 +188,7 @@ const handleDelete = async () => {
                     </div>
                 
                         <div className="text-center" >
-                            <Button className="btn btn-primary btn-lg" style={{backgroundColor: "rgba(46,48,146,255)"}} size="md" onClick={() => { handlePostShow() }} >
+                            <Button className="btn-primary btn-sm" style={{backgroundColor: "rgba(46,48,146,255)"}} size="md"  onClick={() => { handlePostShow() }} >
                                 <i className='fa fa-plu'></i>
                                 Add New Product
                             </Button>
@@ -199,47 +197,119 @@ const handleDelete = async () => {
                 
             {/* View Modal */}
             <div className='model-box-view'>
-                <Modal
+                <Modal centered className='md-3'
                     show={ViewShow}
                     onHide={hanldeViewClose}
                     backdrop="static"
                     keyboard={false}
-                    style={{marginLeft: "200px"}}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>View Product Details</Modal.Title>
+                        <Modal.Title> Product Details</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+
+                    <Form>
+                            <FormLabel className='mt'> Product Name </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.id} readOnly
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Product Name </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.product_name} readOnly
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Category </FormLabel>
+                            <InputGroup>
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.category_name} readOnly
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Description </FormLabel>
+                            <InputGroup>
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.description} readOnly
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Created By </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.created_by} readOnly
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Stock Status </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.status} readOnly
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Created At </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    value={RowData.created_at} readOnly
+                                />
+                            </InputGroup>
+
+                        </Form> 
+
+{/* 
                         <div>
                           <div className='form-group mt-3'>
-                            Product ID: 
+                                <label>Product ID</label>
                                 <input type="text" className='form-control' value={RowData.id} readOnly />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Product Name</label>
                                 <input type="text" className='form-control' value={RowData.product_name} readOnly />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Category</label>
                                 <input type="text" className='form-control' value={RowData.category_name} readOnly />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Description</label>
                                 <input type="text" className='form-control' value={RowData.description} readOnly />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Created By</label>
                                 <input type="text" className='form-control' value={RowData.created_by} readOnly />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Stock Status</label>
                                 <input type="text" className='form-control' value={RowData.status} readOnly />
                             </div>
                             <div className='form-group mt-3'>
                                 <input type="text" className='form-control' value={RowData.created_at} readOnly />
-                            </div>
+                            </div> */}
                             
                             {
                                 Delete && (
-                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete} >Delete Product</Button>
+                                    <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Delete Product</Button>
                                 )
                             }
-                        </div>
+                        {/* </div> */}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
@@ -249,36 +319,95 @@ const handleDelete = async () => {
 
              {/* Modal for submit data to database */} 
              <div className='model-box-view'>
-                <Modal
+                <Modal centered
                     show={ViewPost}
                     onHide={hanldePostClose}
                     backdrop="static"
                     keyboard={false}
-                    style={{marginLeft: "200px"}}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title>Add new Product</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div>
+                        <Form>
+                            <FormLabel className='mt'> Product Name </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setName(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Category </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setCategory(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Description </FormLabel>
+                            <InputGroup>
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setDescription(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Created By </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setCreatedBy(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Stock Status </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setStatus(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                />
+                            </InputGroup>
+
+                        </Form> 
+                        <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmit}>Add Product</Button>
+
+                        {/* <div>
                             <div className='form-group'>
+                                <label>Product Name</label>
                                 <input type="text" className='form-control' onChange={(e) => setName(e.target.value)} placeholder="Please enter Product Name" />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Category</label>
                                 <input type="text" className='form-control' onChange={(e) => setCategory(e.target.value)} placeholder="Please enter Category" />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Description</label>
                                 <input type="text" className='form-control' onChange={(e) => setDescription(e.target.value)} placeholder="Please enter Description" />
                             </div>
                             <div className='form-group mt-3'>
+                                <label>Created By</label>
                                 <input type="text" className='form-control' onChange={(e) => setCreatedBy(e.target.value)} placeholder="Please enter name of Creator" />
                             </div>
                             <div className='form-group mt-3'>
+                                <label> Stock Status</label>
                                 <input type="text" className='form-control' onChange={(e) => setStatus(e.target.value)} placeholder="Please enter product status" />
                             </div>
                             
                             <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmit}>Add Product</Button>
-                        </div>
+                        </div> */}
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant='secondary' onClick={hanldePostClose}>Close</Button>
@@ -288,40 +417,102 @@ const handleDelete = async () => {
 
              {/* Modal for Edit product record */}
              <div className='model-box-view'>
-                <Modal
+                <Modal centered
                     show={ViewEdit}
                     onHide={hanldeEditClose}
                     backdrop="static"
                     keyboard={false}
-                    style={{marginLeft: "200px"}}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Product</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+
+                    <Form>
+                            <FormLabel className=''> Product Name </FormLabel>
+                            <InputGroup>
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setName(e.target.value) || e.target.value} 
+                                    placeholder="Please enter Product Name"
+                                    defaultValue={RowData.product_name}
+                                    
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Category </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setCategory(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                    defaultValue={RowData.category_name}
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Description </FormLabel>
+                            <InputGroup>
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setDescription(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                    defaultValue={RowData.description}
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Created By </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setCreatedBy(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                    defaultValue={RowData.created_by}
+                                />
+                            </InputGroup>
+
+                            <FormLabel className='mt-3'> Stock Status </FormLabel>
+                            <InputGroup >
+                                <Form.Control
+                                    type='text'
+                                    className='form-control'
+                                    onChange={(e) => setStatus(e.target.value)} 
+                                    placeholder="Please enter Product Name"
+                                    defaultValue={RowData.status}
+                                />
+                            </InputGroup>
+
+                        </Form> 
+                        <Button type='submit' className='btn btn-success mt-4' onClick={handleEdit}>Edit Product</Button>
+                        
+{/* 
                         <div>
                             <div className='form-group'>
-                                <label>Code</label>
+                                <label>Product Name</label>
                                 <input type="text" className='form-control' onChange={(e) => setName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.product_name}/>
                             </div>
                             <div className='form-group mt-3'>
-                                <label>Name</label>
+                                <label>Category</label>
                                 <input type="text" className='form-control' onChange={(e) => setCategory(e.target.value)} placeholder="Please enter Category" defaultValue={RowData.category_name} />
                             </div>
                             <div className='form-group mt-3'>
-                                <label>Quantity</label>
+                                <label>Description</label>
                                 <input type="text" className='form-control' onChange={(e) => setDescription(e.target.value)} placeholder="Please enter Description" defaultValue={RowData.description}/>
                             </div>
                             <div className='form-group mt-3'>
-                                <label>Quantity</label>
+                                <label>Created By</label>
                                 <input type="text" className='form-control' onChange={(e) => setCreatedBy(e.target.value)} placeholder="Please enter Creator" defaultValue={RowData.created_by}/>
                             </div>
                             <div className='form-group mt-3'>
-                                <label>Quantity</label>
+                                <label> Stock Status</label>
                                 <input type="text" className='form-control' onChange={(e) => setStatus(e.target.value)} placeholder="Please enter Status" defaultValue={RowData.status}/>
                             </div>
                             <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Edit Product</Button>
-                        </div>
+                        </div> */}
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant='secondary' onClick={hanldeEditClose}>Close</Button>
