@@ -82,9 +82,9 @@ function refreshPage(){
   }
 
   // edit product 
-  const handleEdit = async () => {
+  const handleEdit = async (e) => {
     try{
-    // e.preventDefault();
+    e.preventDefault();
     const url = `https://product-fhqo.onrender.com/products/${id}`;
     const credentials = { 
                         'product_name': name , 
@@ -92,16 +92,9 @@ function refreshPage(){
                         'description':description,
                         'created_by': createdBy,
                         'status':status};
-    // const config = { 'Content-Type': 'application/json' };
+    
     const datas = await axios.put(url, credentials);
-        // setName(datas.data.product_name);
-        // setCategory(datas.data.category_name);
-        // setDescription(datas.data.description);
-        // setCreatedBy(datas.data.created_by);
-        // setStatus(datas.data.status);
-        // console.log(datas);
         console.log(datas.data);
-        // setData(oldDatas => [...oldDatas.data, datas.data]);
         setData(datas.data);
         SetEditShow(false);
         refreshPage();
@@ -134,66 +127,61 @@ const handleDelete = async () => {
     <div className="App">
       <h1> REACT TABLE CRUD </h1>
       <div className='row'>
-                <div className='container'>
+            <div className="text-center" >
+                    <Button className="btn-primary btn-sm" style={{backgroundColor: "rgba(46,48,146,255)"}} size="md"  onClick={() => { handlePostShow() }} >
+                        Add New Product
+                    </Button>
+            </div>
+            <div className='container'> 
+                <Table bordered responsive >
+                    <thead >
+                        <tr>
+                            {/* <th> Product ID </th> */}
+                            <th> Product Name</th>
+                            <th> Category</th>
+                            <th> Description</th>
+                            <th> Created By</th>
+                            <th> Status </th>
+                            {/* <th> Created At </th> */}
+                            <th>
+                                <Form className='search-field'>
+                                <InputGroup className='search'>
+                                    <Form.Control
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder='Search products by name or category'
+                                    />
+                                </InputGroup>
+                                </Form> 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     
-                    <Table bordered responsive >
-                            <thead >
-                                <tr>
-                                    <th> Product ID </th>
-                                    <th> Product Name</th>
-                                    <th> Category</th>
-                                    <th> Description</th>
-                                    <th> Created By</th>
-                                    <th> Status </th>
-                                    <th> Created At </th>
-                                    <th>
-                                        <Form className='search-field'>
-                                        <InputGroup className='search'>
-                                            <Form.Control
-                                            onChange={(e) => setSearch(e.target.value)}
-                                            placeholder='Search products'
-                                            />
-                                        </InputGroup>
-                                        </Form> 
-                                    </th>
-                                </tr>
-                            </thead>
-                            {/* </Table>
-                            <Table bordered > */}
-                            <tbody>
-                          
-                            { data.products && 
-                                data.products?.filter((item) => {
-                                    return search.toLowerCase() === ''
-                                    ? item
-                                    : item.product_name.toLowerCase().includes(search) || item.category_name.toLowerCase().includes(search);
-                                }).map((item) =>
-                                    <tr key={item.id}>
-                                        <td> {item.id} </td>
-                                        <td>{item.product_name}</td>
-                                        <td>{item.category_name}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.created_by}</td>
-                                        <td>{item.status}</td>
-                                        <td>{String(item.created_at).substr(0 ,10)}</td>
-                                        <td className='button-groups'>
-                                            <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button>
-                                            <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={()=> {handleEditShow(SetRowData(item),setId(item.id))}}> Edit </Button>
-                                            <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => {handleViewShow(SetRowData(item),setId(item.id), setDelete(true))}}>Delete</Button>
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </Table>
-                    </div>
-                
-                        <div className="text-center" >
-                            <Button className="btn-primary btn-sm" style={{backgroundColor: "rgba(46,48,146,255)"}} size="md"  onClick={() => { handlePostShow() }} >
-                                <i className='fa fa-plu'></i>
-                                Add New Product
-                            </Button>
-                        </div>
-                </div>
+                    { data.products && 
+                        data.products?.filter((item) => {
+                            return search.toLowerCase() === ''
+                            ? item
+                            : item.product_name.toLowerCase().includes(search) || item.category_name.toLowerCase().includes(search);
+                        }).map((item) =>
+                            <tr key={item.id}>
+                                {/* <td> {item.id} </td> */}
+                                <td>{item.product_name}</td>
+                                <td>{item.category_name}</td>
+                                <td>{item.description}</td>
+                                <td>{item.created_by}</td>
+                                <td>{item.status}</td>
+                                {/* <td>{String(item.created_at).substr(0 ,10)}</td> */}
+                                <td className='button-groups'>
+                                    {/* <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button> */}
+                                    <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={()=> {handleEditShow(SetRowData(item),setId(item.id))}}> Edit </Button>
+                                    <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => {handleViewShow(SetRowData(item),setId(item.id), setDelete(true))}}>Delete</Button>
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
+        </div>
                 
             {/* View Modal */}
             <div className='model-box-view'>
@@ -329,14 +317,15 @@ const handleDelete = async () => {
                         <Modal.Title>Add new Product</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form>
+                        <Form >
                             <FormLabel className='mt'> Product Name </FormLabel>
-                            <InputGroup >
+                            <InputGroup>
                                 <Form.Control
                                     type='text'
                                     className='form-control'
                                     onChange={(e) => setName(e.target.value)} 
                                     placeholder="Please enter Product Name"
+                                    required
                                 />
                             </InputGroup>
 
@@ -347,6 +336,7 @@ const handleDelete = async () => {
                                     className='form-control'
                                     onChange={(e) => setCategory(e.target.value)} 
                                     placeholder="Please enter Product Name"
+                                    required
                                 />
                             </InputGroup>
 
@@ -357,6 +347,7 @@ const handleDelete = async () => {
                                     className='form-control'
                                     onChange={(e) => setDescription(e.target.value)} 
                                     placeholder="Please enter Product Name"
+                                    required
                                 />
                             </InputGroup>
 
@@ -367,6 +358,7 @@ const handleDelete = async () => {
                                     className='form-control'
                                     onChange={(e) => setCreatedBy(e.target.value)} 
                                     placeholder="Please enter Product Name"
+                                    required
                                 />
                             </InputGroup>
 
@@ -377,6 +369,7 @@ const handleDelete = async () => {
                                     className='form-control'
                                     onChange={(e) => setStatus(e.target.value)} 
                                     placeholder="Please enter Product Name"
+                                    required
                                 />
                             </InputGroup>
 
@@ -434,10 +427,9 @@ const handleDelete = async () => {
                                 <Form.Control
                                     type='text'
                                     className='form-control'
-                                    onChange={(e) => setName(e.target.value) || e.target.value} 
+                                    onChange={(e) => setName(e.target.value) } 
                                     placeholder="Please enter Product Name"
                                     defaultValue={RowData.product_name}
-                                    
                                 />
                             </InputGroup>
 
