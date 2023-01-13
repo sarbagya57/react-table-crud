@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './App.css';
-import { Button, Form, FormLabel, InputGroup, Modal, ModalTitle,  Table } from 'react-bootstrap';
+import { Button, Form, FormLabel, InputGroup, Modal,  Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
 function App() {
@@ -46,7 +46,7 @@ const [Delete,setDelete] = useState(false)
     try {
       const datas = await axios.get(url);
       setData(datas.data);
-      console.log(datas.data);
+    //   console.log(datas.data);
     } 
     catch (error) {
       console.log(error);
@@ -74,10 +74,11 @@ function refreshPage(){
         setData(datas.data);
         SetPostShow(false);
         refreshPage();
-        console.log(datas.data);
+        // console.log(datas.data);
     }
     catch(error){
-        console.log(error);
+        alert( "Please fill every filled to submit");
+        console.error("Error!!!")
     }
   }
 
@@ -100,7 +101,8 @@ function refreshPage(){
         refreshPage();
     }
     catch(error) {
-        console.error(error)
+         alert( "Please fill every filled to submit");
+        console.error("Error!!!")
     }
 }
 
@@ -115,7 +117,7 @@ const handleDelete = async () => {
     refreshPage();
     }
     catch(error) {
-            console.error(error)
+        console.error(error)
     }
 }
 
@@ -136,13 +138,11 @@ const handleDelete = async () => {
                 <Table bordered responsive >
                     <thead >
                         <tr>
-                            {/* <th> Product ID </th> */}
                             <th> Product Name</th>
                             <th> Category</th>
                             <th> Description</th>
                             <th> Created By</th>
                             <th> Status </th>
-                            {/* <th> Created At </th> */}
                             <th>
                                 <Form className='search-field'>
                                 <InputGroup className='search'>
@@ -162,17 +162,17 @@ const handleDelete = async () => {
                             return search.toLowerCase() === ''
                             ? item
                             : item.product_name.toLowerCase().includes(search) || item.category_name.toLowerCase().includes(search);
+
                         }).map((item) =>
                             <tr key={item.id}>
-                                {/* <td> {item.id} </td> */}
+
                                 <td>{item.product_name}</td>
                                 <td>{item.category_name}</td>
                                 <td>{item.description}</td>
                                 <td>{item.created_by}</td>
                                 <td>{item.status}</td>
-                                {/* <td>{String(item.created_at).substr(0 ,10)}</td> */}
+                                
                                 <td className='button-groups'>
-                                    {/* <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => { handleViewShow(SetRowData(item)) }}>View</Button> */}
                                     <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={()=> {handleEditShow(SetRowData(item),setId(item.id))}}> Edit </Button>
                                     <Button size='sm' className='but' style={{backgroundColor: "rgba(46,48,146,255)"}} onClick={() => {handleViewShow(SetRowData(item),setId(item.id), setDelete(true))}}>Delete</Button>
                                 </td>
@@ -196,7 +196,7 @@ const handleDelete = async () => {
                     </Modal.Header>
                     <Modal.Body>
 
-                    <Form>
+                    <Form >
                             <FormLabel className='mt'> Product Name </FormLabel>
                             <InputGroup >
                                 <Form.Control
@@ -260,44 +260,12 @@ const handleDelete = async () => {
                                 />
                             </InputGroup>
 
-                        </Form> 
-
-{/* 
-                        <div>
-                          <div className='form-group mt-3'>
-                                <label>Product ID</label>
-                                <input type="text" className='form-control' value={RowData.id} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Product Name</label>
-                                <input type="text" className='form-control' value={RowData.product_name} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Category</label>
-                                <input type="text" className='form-control' value={RowData.category_name} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Description</label>
-                                <input type="text" className='form-control' value={RowData.description} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Created By</label>
-                                <input type="text" className='form-control' value={RowData.created_by} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Stock Status</label>
-                                <input type="text" className='form-control' value={RowData.status} readOnly />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <input type="text" className='form-control' value={RowData.created_at} readOnly />
-                            </div> */}
-                            
+                        </Form>    
                             {
                                 Delete && (
                                     <Button type='submit' className='btn btn-danger mt-4' onClick={handleDelete}>Delete Product</Button>
                                 )
                             }
-                        {/* </div> */}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant='secondary' onClick={hanldeViewClose}>Close</Button>
@@ -317,9 +285,9 @@ const handleDelete = async () => {
                         <Modal.Title>Add new Product</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form >
+                        <Form>
                             <FormLabel className='mt'> Product Name </FormLabel>
-                            <InputGroup>
+                            <InputGroup hasValidation>
                                 <Form.Control
                                     type='text'
                                     className='form-control'
@@ -327,6 +295,9 @@ const handleDelete = async () => {
                                     placeholder="Please enter Product Name"
                                     required
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter product name
+                                </Form.Control.Feedback>
                             </InputGroup>
 
                             <FormLabel className='mt-3'> Category </FormLabel>
@@ -375,31 +346,6 @@ const handleDelete = async () => {
 
                         </Form> 
                         <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmit}>Add Product</Button>
-
-                        {/* <div>
-                            <div className='form-group'>
-                                <label>Product Name</label>
-                                <input type="text" className='form-control' onChange={(e) => setName(e.target.value)} placeholder="Please enter Product Name" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Category</label>
-                                <input type="text" className='form-control' onChange={(e) => setCategory(e.target.value)} placeholder="Please enter Category" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Description</label>
-                                <input type="text" className='form-control' onChange={(e) => setDescription(e.target.value)} placeholder="Please enter Description" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Created By</label>
-                                <input type="text" className='form-control' onChange={(e) => setCreatedBy(e.target.value)} placeholder="Please enter name of Creator" />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label> Stock Status</label>
-                                <input type="text" className='form-control' onChange={(e) => setStatus(e.target.value)} placeholder="Please enter product status" />
-                            </div>
-                            
-                            <Button type='submit' className='btn btn-success mt-4' onClick={handleSubmit}>Add Product</Button>
-                        </div> */}
 
                     </Modal.Body>
                     <Modal.Footer>
@@ -479,31 +425,6 @@ const handleDelete = async () => {
 
                         </Form> 
                         <Button type='submit' className='btn btn-success mt-4' onClick={handleEdit}>Edit Product</Button>
-                        
-{/* 
-                        <div>
-                            <div className='form-group'>
-                                <label>Product Name</label>
-                                <input type="text" className='form-control' onChange={(e) => setName(e.target.value)} placeholder="Please enter Name" defaultValue={RowData.product_name}/>
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Category</label>
-                                <input type="text" className='form-control' onChange={(e) => setCategory(e.target.value)} placeholder="Please enter Category" defaultValue={RowData.category_name} />
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Description</label>
-                                <input type="text" className='form-control' onChange={(e) => setDescription(e.target.value)} placeholder="Please enter Description" defaultValue={RowData.description}/>
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label>Created By</label>
-                                <input type="text" className='form-control' onChange={(e) => setCreatedBy(e.target.value)} placeholder="Please enter Creator" defaultValue={RowData.created_by}/>
-                            </div>
-                            <div className='form-group mt-3'>
-                                <label> Stock Status</label>
-                                <input type="text" className='form-control' onChange={(e) => setStatus(e.target.value)} placeholder="Please enter Status" defaultValue={RowData.status}/>
-                            </div>
-                            <Button type='submit' className='btn btn-warning mt-4' onClick={handleEdit}>Edit Product</Button>
-                        </div> */}
 
                     </Modal.Body>
                     <Modal.Footer>
